@@ -1,6 +1,9 @@
-<apex:component>
-<!-- Begin Default Content REMOVE THIS -->
-<h1>Congratulations</h1>
-This is your new Component
-<!-- End Default Content REMOVE THIS -->
+<apex:component controller="ExamController">
+    
+    <h1>Choose your category:</h1>
+    <apex:form title="Categories" >
+        <apex:selectList size="1" onselect="{!questions}">
+            <apex:selectOptions value="{!examcategories}" />
+        </apex:selectList>
+    </apex:form>
 </apex:component>

@@ -1,0 +1,9 @@
+<apex:component controller="ExamController">
+
+    <h1>Question sets:</h1>
+<apex:form title="Question Sets">
+        <apex:selectList size="1" >
+            <apex:selectOptions value="{!questions}" />
+        </apex:selectList>
+    </apex:form>
+</apex:component>
