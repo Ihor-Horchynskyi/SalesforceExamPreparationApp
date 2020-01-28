@@ -1,0 +1,17 @@
+<apex:page>
+
+    <head>
+        <apex:slds />
+    </head>
+    <!-- Begin Default Content REMOVE THIS -->
+    <div class="slds-card">
+        <div class="slds-align_absolute-center">
+            <h1>Welcome to your salesforce exam practice!</h1>
+            Please choose your theme
+        </div>
+        <div class="slds-align_absolute-center">
+            <c:ExamChooser/>
+        </div>
+    </div>
+    <!-- End Default Content REMOVE THIS -->
+</apex:page>
