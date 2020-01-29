@@ -2,40 +2,59 @@
 
     <apex:form>
         <apex:pageBlock>
-            <apex:pageBlockButtons>
-                <apex:outputLabel for="submit" value="You choosed {!selectedExamCategory} exam." id="finalCategory" />
-                <apex:outputLabel for="submit" value="You choosed {!selectedQuestionSet} question set." id="finalQSet" />
-                <apex:commandButton action="{!submit}" value="Begin exam" />
-            </apex:pageBlockButtons>
-            <div class="slds-card__header slds-align_absolute-center">
-                <div class="slds-media__body">
-                    <h1 class="slds-card__header-title">Welcome to your salesforce exam practice!</h1>
-                    Please choose your theme
-                </div>
+            <div class="slds-align_absolute-center">
+                <h1 class="slds-card__header-title">Welcome to your salesforce exam practice!</h1>
+
+                Please choose your theme
             </div>
             <apex:pageBlockSection>
                 <apex:pageBlockSectionItem>
                     <apex:actionRegion>
                         <h1>Choose your category:</h1>
-                            <apex:selectList value="{!selectedExamCategory}" size="1">
-                                <apex:selectOptions value="{!examcategories}" />
-                                <apex:actionSupport event="onchange" action="{!getQuestionList}" rerender="questionList, choosedExam, finalCategory" />
-                            </apex:selectList>
+                        <apex:selectList value="{!selectedExamCategory}" size="1">
+                            <apex:selectOptions value="{!examcategories}" />
+                            <apex:actionSupport event="onchange" action="{!getQuestionList}" rerender="questionList, choosedExam, finalCategory" />
+                        </apex:selectList>
                     </apex:actionRegion>
                 </apex:pageBlockSectionItem>
                 <apex:pageBlockSectionItem>
                     <apex:actionRegion>
                         <h1>Question sets for </h1>
                         <apex:outputLabel for="examcategory" value="{!selectedExamCategory}:" id="choosedExam" />
-                            <apex:selectList id="questionList" value="{!selectedQuestionSet}" size="1">
-                                <apex:selectOptions value="{!questions}" />
-                                <apex:actionSupport event="onchange" rerender="finalQSet" />
-                            </apex:selectList>
+                        <apex:selectList id="questionList" value="{!selectedQuestionSet}" size="1">
+                            <apex:selectOptions value="{!questions}" />
+                            <apex:actionSupport event="onchange" rerender="finalQSet" />
+                        </apex:selectList>
                     </apex:actionRegion>
                 </apex:pageBlockSectionItem>
             </apex:pageBlockSection>
-            
+            <apex:pageBlockSection>
+                <div class="slds-align_absolute-center">
+                    <apex:commandButton action="{!startExam}" value="Begin exam" />
+                </div>
+            </apex:pageBlockSection>
         </apex:pageBlock>
+    </apex:form>
+
+    <apex:form>
+        <apex:pageBlock title="Exam" mode="edit" id="examBlock_Id">
+            <apex:pageMessages/>
+            <apex:pageBlockSection>
+                <apex:pageBlockSectionItem>
+                    <apex:outputLabel for="examblock" value="{!questionTitle}" id="questionTitle_Id" />
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:selectCheckboxes value="{!selectedAnswers}">
+                <apex:selectOptions value="{!answerVariants}" />
+            </apex:selectCheckboxes>
+            <apex:pageBlockSection>
+                <apex:pageBlockSectionItem>
+                    <apex:commandButton value="Submit" action="{!submitAnswer}" />
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+
     </apex:form>
 
 </apex:page>
