@@ -1,7 +1,7 @@
 public without sharing class ExamController {
 	public List<SelectOption> examCategories {set;}
 	public List<SelectOption> questions = new List<SelectOption>();
-	public List<SelectOption> answerVariants {get; set;}
+	public List<SelectOption> answerVariants = new List<SelectOption>();
 
 	public String selectedExamCategory {get; set;}
 	public String selectedQuestionSet {get; set;}
@@ -64,6 +64,9 @@ public without sharing class ExamController {
 		                              Question__r.Text__c
 		                              FROM Answer__c
 		                              WHERE Question__r.Exam__r.Title__c =: selectedQuestionSet];
+		System.debug('selectedQuestionSet ' + selectedQuestionSet);
+		System.debug('answerList ' + answerList);
+
 		for(Answer__c answer : answerList) {
 			if(!answersToQuestionsMap.containsKey(answer.Question__r.Text__c)) {
 				answersToQuestionsMap.put(answer.Question__r.Text__c, new List<Answer__c> {answer});
@@ -76,6 +79,10 @@ public without sharing class ExamController {
 		refreshQuestion();
 	}
 
+	public List<SelectOption> getAnswerVariants(){
+		return answerVariants;
+	}
+
 	public void refreshQuestion(){
 		if(currentQuestionNumber < questionsList.size()) {
 			questionTitle = questionsList.get(currentQuestionNumber);
@@ -84,6 +91,7 @@ public without sharing class ExamController {
 			}
 		}
 		currentQuestionNumber++;
+		System.debug('Question ' + currentQuestionNumber + ' ' + questionTitle);
 	}
 
 	public void submitAnswer(){

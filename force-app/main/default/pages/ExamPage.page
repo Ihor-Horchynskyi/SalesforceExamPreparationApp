@@ -31,6 +31,7 @@
             <apex:pageBlockSection>
                 <div class="slds-align_absolute-center">
                     <apex:commandButton action="{!startExam}" value="Begin exam" />
+                    <apex:actionSupport event="onclick" rerender="questionTitle_Id" />
                 </div>
             </apex:pageBlockSection>
         </apex:pageBlock>
@@ -41,13 +42,16 @@
             <apex:pageMessages/>
             <apex:pageBlockSection>
                 <apex:pageBlockSectionItem>
-                    <apex:outputLabel for="examblock" value="{!questionTitle}" id="questionTitle_Id" />
+                    <apex:actionRegion>
+                        <apex:outputLabel for="examblock" value="{!questionTitle}" id="questionTitle_Id" />
+                    </apex:actionRegion>
                 </apex:pageBlockSectionItem>
             </apex:pageBlockSection>
-            
-            <apex:selectCheckboxes value="{!selectedAnswers}">
-                <apex:selectOptions value="{!answerVariants}" />
-            </apex:selectCheckboxes>
+            <apex:actionRegion>
+                <apex:selectCheckboxes value="{!selectedAnswers}">
+                    <apex:selectOptions value="{!answerVariants}" />
+                </apex:selectCheckboxes>
+            </apex:actionRegion>
             <apex:pageBlockSection>
                 <apex:pageBlockSectionItem>
                     <apex:commandButton value="Submit" action="{!submitAnswer}" />
