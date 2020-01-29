@@ -1,9 +1,13 @@
 <apex:component controller="ExamController">
-    
+
     <h1>Choose your category:</h1>
-    <apex:form title="Categories" >
-        <apex:selectList size="1" onselect="{!questions}">
+    
+    <apex:form title="Categories">
+        <apex:selectList value="{!selectedExamCategory}" size="1">
             <apex:selectOptions value="{!examcategories}" />
+            <apex:actionSupport event="onchange" action="{!getQuestionList}" rerender="questionList, choosedExam, ex1, ex2" />
         </apex:selectList>
     </apex:form>
+    <apex:outputLabel for="questionList" value="1{!questions}"  id="ex1"/>
+    <apex:outputLabel for="questionList" value="2{!QuestionList}"  id="ex2"/>
 </apex:component>

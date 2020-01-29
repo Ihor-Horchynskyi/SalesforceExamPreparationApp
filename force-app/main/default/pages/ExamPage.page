@@ -1,22 +1,41 @@
 <apex:page controller="ExamController">
 
-    <div class="slds-card">
-        <div class="slds-card__header slds-align_absolute-center">
-            <div class="slds-media__body">
-                <h1 class="slds-card__header-title">Welcome to your salesforce exam practice!</h1>
-                Please choose your theme
+    <apex:form>
+        <apex:pageBlock>
+            <apex:pageBlockButtons>
+                <apex:outputLabel for="submit" value="You choosed {!selectedExamCategory} exam." id="finalCategory" />
+                <apex:outputLabel for="submit" value="You choosed {!selectedQuestionSet} question set." id="finalQSet" />
+                <apex:commandButton action="{!submit}" value="Begin exam" />
+            </apex:pageBlockButtons>
+            <div class="slds-card__header slds-align_absolute-center">
+                <div class="slds-media__body">
+                    <h1 class="slds-card__header-title">Welcome to your salesforce exam practice!</h1>
+                    Please choose your theme
+                </div>
             </div>
-        </div>
-        <div class="slds-card__body slds-card__body_inner">
-            <apex:pageblock>
-                <c:ExamChooser/>
-            </apex:pageblock>
-        </div>
-        <div class="slds-card__body slds-card__body_inner">
-            <apex:pageblock>
-                <c:QuestionSet/>
-            </apex:pageblock>
-        </div>
-    </div>
+            <apex:pageBlockSection>
+                <apex:pageBlockSectionItem>
+                    <apex:actionRegion>
+                        <h1>Choose your category:</h1>
+                            <apex:selectList value="{!selectedExamCategory}" size="1">
+                                <apex:selectOptions value="{!examcategories}" />
+                                <apex:actionSupport event="onchange" action="{!getQuestionList}" rerender="questionList, choosedExam, finalCategory" />
+                            </apex:selectList>
+                    </apex:actionRegion>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem>
+                    <apex:actionRegion>
+                        <h1>Question sets for </h1>
+                        <apex:outputLabel for="examcategory" value="{!selectedExamCategory}:" id="choosedExam" />
+                            <apex:selectList id="questionList" value="{!selectedQuestionSet}" size="1">
+                                <apex:selectOptions value="{!questions}" />
+                                <apex:actionSupport event="onchange" rerender="finalQSet" />
+                            </apex:selectList>
+                    </apex:actionRegion>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+        </apex:pageBlock>
+    </apex:form>
 
 </apex:page>
