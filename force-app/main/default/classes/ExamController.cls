@@ -104,6 +104,7 @@ public without sharing class ExamController {
 				answerVariantsOptions.add(new SelectOption(answer.Text__c, answer.Text__c));
 			}
 		}
+		questionTitle = (1 + currentQuestionNumber) + '. ' + questionTitle;
 		currentQuestionNumber++;
 		System.debug('Question ' + currentQuestionNumber + ' ' + questionTitle);
 	}
