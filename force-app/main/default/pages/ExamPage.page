@@ -1,78 +1,91 @@
 <apex:page controller="ExamController">
 
-    <apex:form>
-        <apex:pageBlock>
-            <div class="slds-align_absolute-center">
-                <h1 class="slds-card__header-title">Welcome to your salesforce exam practice!</h1>
-
-                Please choose your theme
-            </div>
-            <apex:pageBlockSection>
-                <apex:pageBlockSectionItem>
-                    <apex:actionRegion>
-                        <h1>Choose your category:</h1>
-                        <apex:selectList value="{!selectedExamCategory}" size="1">
-                            <apex:selectOptions value="{!examcategories}" />
-                            <apex:actionSupport event="onchange" action="{!getQuestionList}" rerender="questionList, choosedExam, finalCategory" />
-                        </apex:selectList>
-                    </apex:actionRegion>
-                </apex:pageBlockSectionItem>
-                <apex:pageBlockSectionItem>
-                    <apex:actionRegion>
-                        <h1>Question sets for </h1>
-                        <apex:outputLabel for="examcategory" value="{!selectedExamCategory}:" id="choosedExam" />
-                        <apex:selectList id="questionList" value="{!selectedQuestionSet}" size="1">
-                            <apex:selectOptions value="{!questions}" />
-                            <apex:actionSupport event="onchange" rerender="finalQSet" />
-                        </apex:selectList>
-                    </apex:actionRegion>
-                </apex:pageBlockSectionItem>
-            </apex:pageBlockSection>
-            <apex:pageBlockSection>
+    <div id="examChooseWindow_id" style="display:block">
+        <apex:form>
+            <apex:pageBlock>
                 <div class="slds-align_absolute-center">
-                    <apex:commandButton action="{!startExam}" value="Begin exam" />
-                    <apex:actionSupport event="onclick" rerender="questionTitle_Id" />
+                    <h1 class="slds-card__header-title">Welcome to your salesforce exam practice!</h1>
+
+                    Please choose your theme
                 </div>
-            </apex:pageBlockSection>
-        </apex:pageBlock>
-    </apex:form>
+                <apex:pageBlockSection>
+                    <apex:pageBlockSectionItem>
+                        <apex:actionRegion>
+                            <h1>Choose your category:</h1>
+                            <apex:selectList value="{!selectedExamCategory}" size="1">
+                                <apex:selectOptions value="{!examcategories}" />
+                                <apex:actionSupport event="onchange" action="{!getQuestionList}" rerender="questionList, choosedExam, finalCategory" />
+                            </apex:selectList>
+                        </apex:actionRegion>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem>
+                        <apex:actionRegion>
+                            <h1>Question sets for </h1>
+                            <apex:outputLabel for="examcategory" value="{!selectedExamCategory}:" id="choosedExam" />
+                            <apex:selectList id="questionList" value="{!selectedQuestionSet}" size="1">
+                                <apex:selectOptions value="{!questions}" />
+                                <apex:actionSupport event="onchange" rerender="finalQSet" />
+                            </apex:selectList>
+                        </apex:actionRegion>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection>
+                    <div class="slds-align_absolute-center">
+                        <apex:commandButton action="{!startExam}" onclick="hideAndSeek()" value="Begin exam" />
+                        <apex:actionSupport event="onclick" rerender="questionTitle_Id" />
+                    </div>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+        </apex:form>
+    </div>
 
-    <apex:form>
-        <apex:pageBlock title="Exam" mode="edit" id="examBlock_Id">
-            <apex:pageMessages/>
-            <apex:pageBlockSection>
+    <div id="testWindow_id" style="display:block">
+        <apex:form>
+            <apex:pageBlock title="Exam" mode="edit" id="examBlock_Id">
+                <apex:pageMessages/>
+
+                <apex:pageBlockSection>
+                    <apex:pageBlockSectionItem>
+                        <apex:actionRegion>
+                            <apex:outputLabel for="examblock" value="{!questionTitle}" id="questionTitle_Id" />
+                        </apex:actionRegion>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+
+                <apex:pageBlockSection>
+                    <apex:pageBlockSectionItem>
+                        <apex:actionRegion>
+                            <apex:selectCheckboxes value="{!selectedAnswers}" layout="pageDirection">
+                                <apex:selectOptions value="{!answerVariantsOptions}" />
+                            </apex:selectCheckboxes>
+                        </apex:actionRegion>
+                    </apex:pageBlockSectionItem>
                 <apex:pageBlockSectionItem>
-                    <apex:actionRegion>
-                        <apex:outputLabel for="examblock" value="{!questionTitle}" id="questionTitle_Id" />
-                    </apex:actionRegion>
+                    <apex:pageBlockSectionItem>
+                        <apex:outputText value="{!previousAnswerTable }" escape="false" id="previousAnswerTable_id" />
+                    </apex:pageBlockSectionItem>
                 </apex:pageBlockSectionItem>
-            </apex:pageBlockSection>
-            <apex:pageBlockSection>
-                <apex:pageBlockSectionItem>
-                <apex:actionRegion>
-                    <apex:selectCheckboxes value="{!selectedAnswers}" layout="pageDirection">
-                        <apex:selectOptions value="{!answerVariantsOptions}" />
-                    </apex:selectCheckboxes>
-                </apex:actionRegion>
-            </apex:pageBlockSectionItem>
-            <apex:pageBlockSectionItem>
-                    <apex:outputText value="{!previousAnswerTable }" escape="false" id="previousAnswerTable_id"/>
-            </apex:pageBlockSectionItem>
-            </apex:pageBlockSection>
-            <apex:pageBlockSection>
-                <apex:pageBlockSectionItem>
-                    <apex:commandButton value="Submit" action="{!submitAnswer}" />
-                    <apex:actionSupport event="onclick" rerender="previousAnswerTable_id" />
-                </apex:pageBlockSectionItem>
-            </apex:pageBlockSection>
-            <!-- <apex:pageBlockSection>
-                <apex:pageBlockTable value="{!previousAnswerList}" var="previousAnswer">
-                    <apex:column headerValue="{!previousAnswerTitle}" value="{!previousAnswer}" />
-                </apex:pageBlockTable>
-            </apex:pageBlockSection> -->
-        </apex:pageBlock>
-    </apex:form>
+                </apex:pageBlockSection>
 
+                <apex:pageBlockSection>
+                    <apex:pageBlockSectionItem>
+                        <apex:commandButton value="Submit" action="{!submitAnswer}" />
+                        <apex:actionSupport event="onclick" rerender="previousAnswerTable_id" />
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
 
+            </apex:pageBlock>
+        </apex:form>
+    </div>
+
+    <script>
+        function hideAndSeek() {
+            var examChooseWindow = document.getElementById('examChooseWindow_id');
+            var testWindow = document.getElementById('testWindow_id');
+
+            examChooseWindow.style.display = 'none';
+            testWindow.style.display = 'block';
+        }
+    </script>
 
 </apex:page>

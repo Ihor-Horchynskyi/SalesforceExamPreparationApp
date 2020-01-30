@@ -128,7 +128,7 @@ public without sharing class ExamController {
 		for(String answerString : previousAnswerList) {
 			columns += '<tr>' + answerString +'</tr>';
 		}
-		previousAnswerTable = '<p><h1>Previous question:</br></br>' + (fail ? '&#10060' : '&#9989') +
+		previousAnswerTable = '<p><h1>Previous question:</br></br>' + (fail ? '&#10060 ' : '&#9989 ') +
 		                      questionTitle + '</h1><br/></p><table style="width:100%" border="1">' +
 		                      '<tr><th>Selected answer</th><th>Answer</th><th>Correct answer</th></tr>' +
 		                      columns + '</table>';
