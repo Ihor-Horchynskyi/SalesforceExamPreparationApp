@@ -67,6 +67,10 @@
                     <apex:commandButton value="Submit" action="{!submitAnswer}" />
                     <apex:actionSupport event="onclick" rerender="previousAnswerTable_id" />
                 </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem>
+                    <apex:commandButton value="Finish" action="{!testFinish}" />
+                    <apex:actionSupport event="onclick" />
+                </apex:pageBlockSectionItem>
             </apex:pageBlockSection>
 
         </apex:pageBlock>

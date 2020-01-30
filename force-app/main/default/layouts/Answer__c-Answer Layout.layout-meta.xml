@@ -20,11 +20,11 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>QuestionExternalId__c</field>
+                <field>Answers__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Answers__c</field>
+                <field>Question__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

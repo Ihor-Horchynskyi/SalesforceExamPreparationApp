@@ -13,9 +13,12 @@ public without sharing class ExamController {
 	public Boolean displayExamAnswerBlock {get; set;}
 
 	public Integer currentQuestionNumber = 0;
+	public Decimal minPassRate = 0;
 
 	public List<String> selectedAnswers {get; set;}
 	public List<Answer__c> answerVariants = new List<Answer__c>();
+	Integer correctAnswersIterator = 0;
+	List<String> sessionLogList = new List<String>();
 	public List<String> htmlAnswerTableList = new List<String>();
 	public List<String> questionsList = new List<String>();
 	public Map<String, List<Answer__c> > answersToQuestionsMap = new Map<String, List<Answer__c> >();
@@ -72,7 +75,8 @@ public without sharing class ExamController {
 		                              IsCorrect__c,
 		                              Text__c,
 		                              Question__r.Id,
-		                              Question__r.Text__c
+		                              Question__r.Text__c,
+									  Question__r.Exam__r.MinCorrectAnswers__c
 		                              FROM Answer__c
 		                              WHERE Question__r.Exam__r.Title__c =: selectedQuestionSet];
 		System.debug('selectedQuestionSet ' + selectedQuestionSet);
@@ -138,6 +142,8 @@ public without sharing class ExamController {
 		                      questionTitle + '</h1><br/></p><table style="width:100%" border="1">' +
 		                      '<tr><th>Selected answer</th><th>Answer</th><th>Correct answer</th></tr>' +
 		                      columns + '</table>';
+		sessionLogList.add(previousAnswerTable);
+		if (!fail) correctAnswersIterator++;
 		System.debug('previousAnswerTable ' + previousAnswerTable);
 
 		htmlAnswerTableList.add(previousAnswerTable);
@@ -146,5 +152,15 @@ public without sharing class ExamController {
 
 	public String getPreviousAnswerTable(){
 		return previousAnswerTable;
+	}
+
+	public void testFinish(){
+		ExamSession__c session = new ExamSession__c();
+		session.MinPassRate__c = minPassRate;
+		session.ExamSessionLog__c = String.join(sessionLogList, '<br/><br/>');
+		session.Name = selectedExamCategory + '(' + selectedQuestionSet + ') ' + UserInfo.getFirstName() + ' ' + UserInfo.getLastName();
+		session.Summary__c = (correctAnswersIterator/answersToQuestionsMap.size())*100;
+
+		insert session;
 	}
 }
