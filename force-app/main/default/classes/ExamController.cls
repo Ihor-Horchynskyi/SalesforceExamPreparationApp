@@ -6,18 +6,22 @@ public without sharing class ExamController {
 	public String selectedExamCategory {get; set;}
 	public String selectedQuestionSet {get; set;}
 	public String questionTitle {get; set;}
+	public String previousAnswerTable {get; set;}
 
 	public Boolean displayExamSelectionBlock {get; set;}
 	public Boolean displayExamBlock {get; set;}
 
 	public Integer currentQuestionNumber = 0;
 
-	public String previousAnswerTitle {get; set;}
-	public List<String> previousAnswerList = new List<String>();
-	public String selectedAnswers {get; set;}
+	public List<String> selectedAnswers {get; set;}
 	public List<Answer__c> answerVariants = new List<Answer__c>();
+	public List<String> htmlAnswerTableList = new List<String>();
 	public List<String> questionsList = new List<String>();
 	public Map<String, List<Answer__c> > answersToQuestionsMap = new Map<String, List<Answer__c> >();
+
+	public ExamController() {
+		selectedAnswers = new List<String>();
+	}
 
 	public List<SelectOption> getExamCategories(){
 		List<SelectOption> examCategoryList = new List<SelectOption>();
@@ -102,29 +106,39 @@ public without sharing class ExamController {
 
 	public void submitAnswer(){
 		Boolean fail = false;
-		previousAnswerList.clear();
-		previousAnswerTitle = String.valueOf(questionTitle);
+		List<String> previousAnswerList = new List<String>();
 		List<String> correctAnswerList = new List<String>();
 		List<String> failAnswerList = new List<String>();
-		Map<String, String> checkedAnswers = new Map<String, String>();
-		List<String> selectedAnswersList = new List<String>(selectedAnswers.split(' '));
-		//for(SelectOption option : selectedAnswers) selectedAnswersList.add(option.getValue());
+		List<String> selectedAnswersList = new List<String>(selectedAnswers);
 		for(Answer__c answer : answerVariants) {
 			if(answer.IsCorrect__c && selectedAnswersList.contains(answer.Text__c)) {
-				checkedAnswers.put(answer.Text__c, 'pass');
-				previousAnswerList.add('&#9989' + answer.Text__c);
-			}
-			else {
-				checkedAnswers.put(answer.Text__c, 'fail');
-				previousAnswerList.add('&#10060' + answer.Text__c);
+				previousAnswerList.add('<th>&#9989</th><th>' + answer.Text__c + '</th><th>&#10004</th>');
+			} else
+			if(answer.IsCorrect__c && !selectedAnswersList.contains(answer.Text__c)) {
+				previousAnswerList.add('<th></th><th>' + answer.Text__c + '</th><th>&#10004</th>');
 				fail = true;
+			} else if(selectedAnswersList.contains(answer.Text__c)) {
+				previousAnswerList.add('<th>&#10060</th><th>' + answer.Text__c + '</th><th></th>');
+				fail = true;
+			} else{
+				previousAnswerList.add('<th></th><th>' + answer.Text__c + '</th><th></th>');
 			}
 		}
+		String columns = '';
+		for(String answerString : previousAnswerList) {
+			columns += '<tr>' + answerString +'</tr>';
+		}
+		previousAnswerTable = '<p><h1>Previous question:</br></br>' + (fail ? '&#10060' : '&#9989') +
+		                      questionTitle + '</h1><br/></p><table style="width:100%" border="1">' +
+		                      '<tr><th>Selected answer</th><th>Answer</th><th>Correct answer</th></tr>' +
+		                      columns + '</table>';
+		System.debug('previousAnswerTable ' + previousAnswerTable);
 
+		htmlAnswerTableList.add(previousAnswerTable);
 		refreshQuestion();
 	}
 
-	public List<String> getPreviousAnswerList(){
-		return previousAnswerList;
+	public String getPreviousAnswerTable(){
+		return previousAnswerTable;
 	}
 }

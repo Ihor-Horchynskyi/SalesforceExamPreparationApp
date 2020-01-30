@@ -56,14 +56,13 @@
                 </apex:actionRegion>
             </apex:pageBlockSectionItem>
             <apex:pageBlockSectionItem>
-                <apex:pageBlockTable value="{!previousAnswerList}" var="previousAnswer">
-                    <apex:column headerValue="{!previousAnswerTitle}" value="{!previousAnswer}" />
-                </apex:pageBlockTable>
+                    <apex:outputText value="{!previousAnswerTable }" escape="false" id="previousAnswerTable_id"/>
             </apex:pageBlockSectionItem>
             </apex:pageBlockSection>
             <apex:pageBlockSection>
                 <apex:pageBlockSectionItem>
                     <apex:commandButton value="Submit" action="{!submitAnswer}" />
+                    <apex:actionSupport event="onclick" rerender="previousAnswerTable_id" />
                 </apex:pageBlockSectionItem>
             </apex:pageBlockSection>
             <!-- <apex:pageBlockSection>
