@@ -1,11 +1,10 @@
 public without sharing class ExamController {
 	public List<SelectOption> examCategories {set;}
 	public List<SelectOption> questions = new List<SelectOption>();
-	public List<SelectOption> answerVariants = new List<SelectOption>();
+	public List<SelectOption> answerVariantsOptions = new List<SelectOption>();
 
 	public String selectedExamCategory {get; set;}
 	public String selectedQuestionSet {get; set;}
-	public String selectedAnswers {get; set;}
 	public String questionTitle {get; set;}
 
 	public Boolean displayExamSelectionBlock {get; set;}
@@ -13,6 +12,10 @@ public without sharing class ExamController {
 
 	public Integer currentQuestionNumber = 0;
 
+	public String previousAnswerTitle {get; set;}
+	public List<String> previousAnswerList = new List<String>();
+	public String selectedAnswers {get; set;}
+	public List<Answer__c> answerVariants = new List<Answer__c>();
 	public List<String> questionsList = new List<String>();
 	public Map<String, List<Answer__c> > answersToQuestionsMap = new Map<String, List<Answer__c> >();
 
@@ -79,15 +82,18 @@ public without sharing class ExamController {
 		refreshQuestion();
 	}
 
-	public List<SelectOption> getAnswerVariants(){
-		return answerVariants;
+	public List<SelectOption> getAnswerVariantsOptions(){
+		return answerVariantsOptions;
 	}
 
 	public void refreshQuestion(){
 		if(currentQuestionNumber < questionsList.size()) {
+			answerVariants.clear();
+			answerVariantsOptions.clear();
 			questionTitle = questionsList.get(currentQuestionNumber);
 			for(Answer__c answer : answersToQuestionsMap.get(questionTitle)) {
-				answerVariants.add(new SelectOption(answer.Text__c, answer.Text__c));
+				answerVariants.add(answer);
+				answerVariantsOptions.add(new SelectOption(answer.Text__c, answer.Text__c));
 			}
 		}
 		currentQuestionNumber++;
@@ -95,6 +101,30 @@ public without sharing class ExamController {
 	}
 
 	public void submitAnswer(){
+		Boolean fail = false;
+		previousAnswerList.clear();
+		previousAnswerTitle = String.valueOf(questionTitle);
+		List<String> correctAnswerList = new List<String>();
+		List<String> failAnswerList = new List<String>();
+		Map<String, String> checkedAnswers = new Map<String, String>();
+		List<String> selectedAnswersList = new List<String>(selectedAnswers.split(' '));
+		//for(SelectOption option : selectedAnswers) selectedAnswersList.add(option.getValue());
+		for(Answer__c answer : answerVariants) {
+			if(answer.IsCorrect__c && selectedAnswersList.contains(answer.Text__c)) {
+				checkedAnswers.put(answer.Text__c, 'pass');
+				previousAnswerList.add('&#9989' + answer.Text__c);
+			}
+			else {
+				checkedAnswers.put(answer.Text__c, 'fail');
+				previousAnswerList.add('&#10060' + answer.Text__c);
+				fail = true;
+			}
+		}
+
 		refreshQuestion();
+	}
+
+	public List<String> getPreviousAnswerList(){
+		return previousAnswerList;
 	}
 }

@@ -47,18 +47,33 @@
                     </apex:actionRegion>
                 </apex:pageBlockSectionItem>
             </apex:pageBlockSection>
-            <apex:actionRegion>
-                <apex:selectCheckboxes value="{!selectedAnswers}">
-                    <apex:selectOptions value="{!answerVariants}" />
-                </apex:selectCheckboxes>
-            </apex:actionRegion>
+            <apex:pageBlockSection>
+                <apex:pageBlockSectionItem>
+                <apex:actionRegion>
+                    <apex:selectCheckboxes value="{!selectedAnswers}" layout="pageDirection">
+                        <apex:selectOptions value="{!answerVariantsOptions}" />
+                    </apex:selectCheckboxes>
+                </apex:actionRegion>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem>
+                <apex:pageBlockTable value="{!previousAnswerList}" var="previousAnswer">
+                    <apex:column headerValue="{!previousAnswerTitle}" value="{!previousAnswer}" />
+                </apex:pageBlockTable>
+            </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
             <apex:pageBlockSection>
                 <apex:pageBlockSectionItem>
                     <apex:commandButton value="Submit" action="{!submitAnswer}" />
                 </apex:pageBlockSectionItem>
             </apex:pageBlockSection>
+            <!-- <apex:pageBlockSection>
+                <apex:pageBlockTable value="{!previousAnswerList}" var="previousAnswer">
+                    <apex:column headerValue="{!previousAnswerTitle}" value="{!previousAnswer}" />
+                </apex:pageBlockTable>
+            </apex:pageBlockSection> -->
         </apex:pageBlock>
-
     </apex:form>
+
+
 
 </apex:page>
