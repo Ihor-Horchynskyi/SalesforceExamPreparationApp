@@ -9,7 +9,8 @@ public without sharing class ExamController {
 	public String previousAnswerTable {get; set;}
 
 	public Boolean displayExamSelectionBlock {get; set;}
-	public Boolean displayExamBlock {get; set;}
+	public Boolean displayExamSessionBlock {get; set;}
+	public Boolean displayExamAnswerBlock {get; set;}
 
 	public Integer currentQuestionNumber = 0;
 
@@ -20,6 +21,7 @@ public without sharing class ExamController {
 	public Map<String, List<Answer__c> > answersToQuestionsMap = new Map<String, List<Answer__c> >();
 
 	public ExamController() {
+		displayExamSelectionBlock = true;
 		selectedAnswers = new List<String>();
 	}
 
@@ -62,6 +64,8 @@ public without sharing class ExamController {
 	}
 
 	public void startExam(){
+		displayExamSelectionBlock = false;
+		displayExamSessionBlock = true;
 		List<Answer__c> answerList = [SELECT Id,
 		                              Answers__c,
 		                              Name,
@@ -105,6 +109,7 @@ public without sharing class ExamController {
 	}
 
 	public void submitAnswer(){
+		displayExamAnswerBlock = true;
 		Boolean fail = false;
 		List<String> previousAnswerList = new List<String>();
 		List<String> correctAnswerList = new List<String>();
@@ -128,7 +133,7 @@ public without sharing class ExamController {
 		for(String answerString : previousAnswerList) {
 			columns += '<tr>' + answerString +'</tr>';
 		}
-		previousAnswerTable = '<p><h1>Previous question:</br></br>' + (fail ? '&#10060 ' : '&#9989 ') +
+		previousAnswerTable = '<p><h1>' + (fail ? '&#10060 ' : '&#9989 ') +
 		                      questionTitle + '</h1><br/></p><table style="width:100%" border="1">' +
 		                      '<tr><th>Selected answer</th><th>Answer</th><th>Correct answer</th></tr>' +
 		                      columns + '</table>';
