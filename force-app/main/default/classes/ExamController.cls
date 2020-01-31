@@ -81,6 +81,7 @@ public without sharing class ExamController {
 		                              WHERE Question__r.Exam__r.Title__c =: selectedQuestionSet];
 		System.debug('selectedQuestionSet ' + selectedQuestionSet);
 		System.debug('answerList ' + answerList);
+		minPassRate = answerList.get(0).Question__r.Exam__r.MinCorrectAnswers__c;
 
 		for(Answer__c answer : answerList) {
 			if(!answersToQuestionsMap.containsKey(answer.Question__r.Text__c)) {
@@ -158,8 +159,13 @@ public without sharing class ExamController {
 		ExamSession__c session = new ExamSession__c();
 		session.MinPassRate__c = minPassRate;
 		session.ExamSessionLog__c = String.join(sessionLogList, '<br/><br/>');
-		session.Name = selectedExamCategory + '(' + selectedQuestionSet + ') ' + UserInfo.getFirstName() + ' ' + UserInfo.getLastName();
-		session.Summary__c = (correctAnswersIterator/answersToQuestionsMap.size())*100;
+		session.Name = selectedExamCategory + '(' + selectedQuestionSet + ') ' + UserInfo.getFirstName() + ' ' + UserInfo.getLastName() + ' - ' + Datetime.now().format('dd/MM/yyyy hh:mm');
+		System.debug( correctAnswersIterator + ' ' + answersToQuestionsMap.size()+1);
+		
+		session.Summary__c = (correctAnswersIterator*100)/(answersToQuestionsMap.size()+1);
+		session.Rate__c = correctAnswersIterator + '/' + (answersToQuestionsMap.size()+1);
+		System.debug('session.Summary__c ' + session.Summary__c);
+		System.debug('session.MinPassRate__c ' + session.MinPassRate__c);
 
 		insert session;
 	}
