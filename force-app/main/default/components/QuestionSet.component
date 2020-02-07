@@ -3,7 +3,7 @@
     <h1>Question sets:</h1>
     <apex:form title="Question Sets">
         <apex:selectList id="questionList">
-            <apex:selectOptions  value="{!QuestionList}"/>
+            <apex:selectOptions value="{!QuestionList}"/>
         </apex:selectList>
     </apex:form>
 </apex:component>

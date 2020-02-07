@@ -1,16 +1,16 @@
 <apex:page controller="ExamController">
 
     <div id="examChooseWindow_id" style="display:block">
-        <apex:form>
+        <apex:form >
             <apex:pageBlock rendered="{!displayExamSelectionBlock}">
                 <div class="slds-align_absolute-center">
                     <h1 class="slds-card__header-title">Welcome to your salesforce exam practice!</h1>
 
                     Please choose your theme
                 </div>
-                <apex:pageBlockSection>
-                    <apex:pageBlockSectionItem>
-                        <apex:actionRegion>
+                <apex:pageBlockSection >
+                    <apex:pageBlockSectionItem >
+                        <apex:actionRegion >
                             <h1>Choose your category:</h1>
                             <apex:selectList value="{!selectedExamCategory}" size="1">
                                 <apex:selectOptions value="{!examcategories}" />
@@ -18,8 +18,8 @@
                             </apex:selectList>
                         </apex:actionRegion>
                     </apex:pageBlockSectionItem>
-                    <apex:pageBlockSectionItem>
-                        <apex:actionRegion>
+                    <apex:pageBlockSectionItem >
+                        <apex:actionRegion >
                             <h1>Question sets for </h1>
                             <apex:outputLabel for="examcategory" value="{!selectedExamCategory}:" id="choosedExam" />
                             <apex:selectList id="questionList" value="{!selectedQuestionSet}" size="1">
@@ -29,7 +29,7 @@
                         </apex:actionRegion>
                     </apex:pageBlockSectionItem>
                 </apex:pageBlockSection>
-                <apex:pageBlockSection>
+                <apex:pageBlockSection >
                     <div class="slds-align_absolute-center">
                         <apex:commandButton action="{!startExam}" onclick="hideAndSeek()" value="Begin exam" />
                         <apex:actionSupport event="onclick" rerender="questionTitle_Id" />
@@ -39,21 +39,21 @@
         </apex:form>
     </div>
 
-    <apex:form>
+    <apex:form >
         <apex:pageBlock title="Exam" mode="edit" id="examBlock_Id" rendered="{!displayExamSessionBlock}">
-            <apex:pageMessages/>
+            <apex:pageMessages />
 
-            <apex:pageBlockSection>
-                <apex:pageBlockSectionItem>
-                    <apex:actionRegion>
+            <apex:pageBlockSection >
+                <apex:pageBlockSectionItem >
+                    <apex:actionRegion >
                         <apex:outputLabel for="examblock" value="{!questionTitle}" id="questionTitle_Id" />
                     </apex:actionRegion>
                 </apex:pageBlockSectionItem>
             </apex:pageBlockSection>
 
-            <apex:pageBlockSection>
-                <apex:pageBlockSectionItem>
-                    <apex:actionRegion>
+            <apex:pageBlockSection >
+                <apex:pageBlockSectionItem >
+                    <apex:actionRegion >
                         <apex:selectCheckboxes value="{!selectedAnswers}" layout="pageDirection">
                             <apex:selectOptions value="{!answerVariantsOptions}" />
                         </apex:selectCheckboxes>
@@ -62,12 +62,12 @@
 
             </apex:pageBlockSection>
 
-            <apex:pageBlockSection>
-                <apex:pageBlockSectionItem>
+            <apex:pageBlockSection >
+                <apex:pageBlockSectionItem >
                     <apex:commandButton value="Submit" action="{!submitAnswer}" />
                     <apex:actionSupport event="onclick" rerender="previousAnswerTable_id" />
                 </apex:pageBlockSectionItem>
-                <apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
                     <apex:commandButton value="Finish" action="{!testFinish}" />
                     <apex:actionSupport event="onclick" />
                 </apex:pageBlockSectionItem>
@@ -76,9 +76,9 @@
         </apex:pageBlock>
 
         <apex:pageBlock title="Previous Answer:" rendered="{!displayExamAnswerBlock}">
-            <apex:pageBlockSection>
-                <apex:pageBlockSectionItem>
-                    <apex:pageBlockSectionItem>
+            <apex:pageBlockSection >
+                <apex:pageBlockSectionItem >
+                    <apex:pageBlockSectionItem >
                         <apex:outputText value="{!previousAnswerTable }" escape="false" id="previousAnswerTable_id" />
                     </apex:pageBlockSectionItem>
                 </apex:pageBlockSectionItem>
