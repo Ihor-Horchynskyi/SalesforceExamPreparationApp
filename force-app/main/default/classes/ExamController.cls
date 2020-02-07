@@ -76,7 +76,7 @@ public without sharing class ExamController {
 		                              Text__c,
 		                              Question__r.Id,
 		                              Question__r.Text__c,
-									  Question__r.Exam__r.MinCorrectAnswers__c
+		                              Question__r.Exam__r.MinCorrectAnswers__c
 		                              FROM Answer__c
 		                              WHERE Question__r.Exam__r.Title__c =: selectedQuestionSet];
 		System.debug('selectedQuestionSet ' + selectedQuestionSet);
@@ -108,10 +108,12 @@ public without sharing class ExamController {
 				answerVariants.add(answer);
 				answerVariantsOptions.add(new SelectOption(answer.Text__c, answer.Text__c));
 			}
+			questionTitle = (1 + currentQuestionNumber) + '. ' + questionTitle;
+			currentQuestionNumber++;
+			System.debug('Question ' + currentQuestionNumber + ' ' + questionTitle);
+		} else {
+			testFinish();
 		}
-		questionTitle = (1 + currentQuestionNumber) + '. ' + questionTitle;
-		currentQuestionNumber++;
-		System.debug('Question ' + currentQuestionNumber + ' ' + questionTitle);
 	}
 
 	public void submitAnswer(){
@@ -161,7 +163,7 @@ public without sharing class ExamController {
 		session.ExamSessionLog__c = String.join(sessionLogList, '<br/><br/>');
 		session.Name = selectedExamCategory + '(' + selectedQuestionSet + ') ' + UserInfo.getFirstName() + ' ' + UserInfo.getLastName() + ' - ' + Datetime.now().format('dd/MM/yyyy hh:mm');
 		System.debug( correctAnswersIterator + ' ' + answersToQuestionsMap.size()+1);
-		
+
 		session.Summary__c = (correctAnswersIterator*100)/(answersToQuestionsMap.size()+1);
 		session.Rate__c = correctAnswersIterator + '/' + (answersToQuestionsMap.size()+1);
 		System.debug('session.Summary__c ' + session.Summary__c);
@@ -170,6 +172,6 @@ public without sharing class ExamController {
 		insert session;
 
 		PageReference pageRef = new PageReference('/lightning/r/ExamSession__c/' + session.Id + '/view');
-        return pageRef;
+		return pageRef;
 	}
 }

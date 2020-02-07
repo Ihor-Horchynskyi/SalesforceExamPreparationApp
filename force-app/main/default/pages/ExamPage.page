@@ -46,7 +46,7 @@
             <apex:pageBlockSection >
                 <apex:pageBlockSectionItem >
                     <apex:actionRegion >
-                        <apex:outputLabel for="examblock" value="{!questionTitle}" id="questionTitle_Id" />
+                        <h2><apex:outputText value="{!questionTitle}" escape="false" id="questionTitle_Id" /></h2>
                     </apex:actionRegion>
                 </apex:pageBlockSectionItem>
             </apex:pageBlockSection>
