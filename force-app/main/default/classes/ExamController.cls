@@ -155,7 +155,7 @@ public without sharing class ExamController {
 		return previousAnswerTable;
 	}
 
-	public void testFinish(){
+	public PageReference testFinish(){
 		ExamSession__c session = new ExamSession__c();
 		session.MinPassRate__c = minPassRate;
 		session.ExamSessionLog__c = String.join(sessionLogList, '<br/><br/>');
@@ -168,5 +168,8 @@ public without sharing class ExamController {
 		System.debug('session.MinPassRate__c ' + session.MinPassRate__c);
 
 		insert session;
+
+		PageReference pageRef = new PageReference('/lightning/r/ExamSession__c/' + session.Id + '/view');
+        return pageRef;
 	}
 }
